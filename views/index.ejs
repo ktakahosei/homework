@@ -1,5 +1,8 @@
 <!-- index.ejs -->
+
+<!--HTNL5ドキュメントの宣言-->
 <!DOCTYPE html>
+<!--日本語に設定-->
 <html lang="ja">
 
 <head>
@@ -9,13 +12,19 @@
 </head>
 
 <body>
+  <!--クラス名'user-list'を持つ無順序リストを作成-->
   <ul class="user-list">
+    <!--users配列の各要素をuserに代入し、ループする-->
     <% for (const user of users) { %>
+      <!--変数userの値をHTMLに挿入-->
       <li class="user-name"><%= user %></li>
     <% } %>
   </ul>
+  <!--クラス名'input-text'を持つテキスト入力フィールドを作成-->
   <input type="text" class="input-text" />
+  <!--クラス名'send-button'を持つボタンを作成-->
   <button class="send-button">送信</button>
+  <!--'/static/index.js'からJavaScriptファイルを読み込み、HTMLドキュメントの解析が完了した後にスクリプトを実行-->
   <script src="/static/index.js" defer></script>
 </body>
 
