@@ -37,28 +37,39 @@ app.use((err, req, res, next) => {
 async function main() {
   //MongoDBに接続し'my-app'データベースを選択
   await client.connect();
-  const db = client.db('my-app');
+  const db = client.db('test');
 
   //ルートハンドラーの設定
   //GETリクエストが来た場合、userコレクションからすべてのユーザーを取得し、その名前をテンプレートエンジンを使ってindex.ejsファイルでレンダリングする
   app.get('/', logMiddleware, async (req, res) => {
-    // const users = ['alpha', 'beta', 'gamma'];
-    const users = await db.collection('user').find().toArray();
-    const names = users.map((user) => {
-      return user.name;
+    //answer:解答
+    //correct:正誤
+    const answer_table = await db.collection('answer_table').find().toArray();
+    const answers = answer_table.map((table_element) => {
+      return table_element.answer;
     });
 
-    res.render(path.resolve(__dirname, 'views/index.ejs'), { users: names });
+    res.render(path.resolve(__dirname, 'views/index.ejs'), { corrects: answers });
   });
   //POSTTリクエストが来た場合、リクエストボディからnameを取得し、userコレクションに新しいドキュメントを追加します。名前が提供されていない場合は、400ステータスコードで「Bad Request」を返す
-  app.post('/api/user', express.json(), async (req, res) => {
-    const name = req.body.name;
-    if (!name) {
+  app.post('/api/test', express.json(), async (req, res) => {
+    const answer = req.body.answer;
+    if (!answer) {
       res.status(400).send('Bad Request');
       return;
     }
-    await db.collection('user').insertOne({ name: name });
+    await db.collection('answer_table').insertOne({ answer: answer });
     res.status(200).send('Created');
+    
+    /*
+    const correctAnswer = '2';
+
+    if(userAnswer === correctAnswer){
+      res.status(200).send('○');
+    }else{
+      res.status(200).send('×');
+    }
+    */
   });
 
   //サーバー起動
