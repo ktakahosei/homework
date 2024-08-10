@@ -5,27 +5,25 @@
 <!--日本語に設定-->
 <html lang="ja">
 
+<!--サイトの設定-->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>学力テスト(算数)</title>
 </head>
 
+<!--サイトの内容-->
 <body>
   <h1>問題</h1>
   <p>4 + 8 × 9 -10 = ?</p>
-  <!--クラス名'input-text'を持つテキスト入力フィールドを作成-->
   <input type="text" class="input-text" />
-  <!--クラス名'send-button'を持つボタンを作成-->
   <button class="send-button">送信</button>
   <ul class="correct-list">
-    <!--users配列の各要素をuserに代入し、ループする-->
     <% for (const correct of corrects) { %>
-      <!--変数userの値をHTMLに挿入-->
       <li class="correct"><%= correct %></li>
     <% } %>
   </ul>
-  <!--'/static/index.js'からJavaScriptファイルを読み込み、HTMLドキュメントの解析が完了した後にスクリプトを実行-->
+  <!--'/static/index.js'にあるJavaScriptファイルの読み込み-->
   <script src="/static/index.js" defer></script>
 </body>
 
