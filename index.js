@@ -36,40 +36,45 @@ app.use((err, req, res, next) => {
 //メイン処理
 async function main() {
   //MongoDBに接続し'my-app'データベースを選択
+  //collection:テーブル
+  //field:列
+  //text:userの解答
+  //answer:解答
+  //correct:正誤
   await client.connect();
-  const db = client.db('test');
+  const db = client.db('text');
+  const collection = db.collection('math');
 
   //ルートハンドラーの設定
   //GETリクエストが来た場合、userコレクションからすべてのユーザーを取得し、その名前をテンプレートエンジンを使ってindex.ejsファイルでレンダリングする
   app.get('/', logMiddleware, async (req, res) => {
-    //answer:解答
-    //correct:正誤
-    const answer_table = await db.collection('answer_table').find().toArray();
-    const answers = answer_table.map((table_element) => {
-      return table_element.answer;
+    const math = await collection.find().toArray();
+    const answers = math.map((answer_element) => {
+      return answer_element.answer;
     });
+    const texts = math.map((text_element) => {
+      return text_element.text;
+    });
+    const corrects = [];
+    for(let i = 0; i < answers.length; i++){
+      if(texts[i + (texts.length - answers.length)] == answers[i]){
+        corrects.push('○');
+      }else{
+        corrects.push('×'); 
+      }
+    }
 
-    res.render(path.resolve(__dirname, 'views/index.ejs'), { corrects: answers });
+    res.render(path.resolve(__dirname, 'views/index.ejs'), { corrects: corrects });
   });
   //POSTTリクエストが来た場合、リクエストボディからnameを取得し、userコレクションに新しいドキュメントを追加します。名前が提供されていない場合は、400ステータスコードで「Bad Request」を返す
   app.post('/api/test', express.json(), async (req, res) => {
-    const answer = req.body.answer;
-    if (!answer) {
+    const text = req.body.text;
+    if (!text) {
       res.status(400).send('Bad Request');
       return;
     }
-    await db.collection('answer_table').insertOne({ answer: answer });
+    await collection.insertOne({ text: text,  answer: '66' });
     res.status(200).send('Created');
-    
-    /*
-    const correctAnswer = '2';
-
-    if(userAnswer === correctAnswer){
-      res.status(200).send('○');
-    }else{
-      res.status(200).send('×');
-    }
-    */
   });
 
   //サーバー起動

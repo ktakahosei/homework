@@ -13,8 +13,11 @@
 
 <body>
   <h1>問題</h1>
-  <p>次の問題を選択肢の中から選べ。</p>
   <p>4 + 8 × 9 -10 = ?</p>
+  <!--クラス名'input-text'を持つテキスト入力フィールドを作成-->
+  <input type="text" class="input-text" />
+  <!--クラス名'send-button'を持つボタンを作成-->
+  <button class="send-button">送信</button>
   <ul class="correct-list">
     <!--users配列の各要素をuserに代入し、ループする-->
     <% for (const correct of corrects) { %>
@@ -22,10 +25,6 @@
       <li class="correct"><%= correct %></li>
     <% } %>
   </ul>
-  <!--クラス名'input-text'を持つテキスト入力フィールドを作成-->
-  <input type="text" class="input-text" />
-  <!--クラス名'send-button'を持つボタンを作成-->
-  <button class="send-button">送信</button>
   <!--'/static/index.js'からJavaScriptファイルを読み込み、HTMLドキュメントの解析が完了した後にスクリプトを実行-->
   <script src="/static/index.js" defer></script>
 </body>

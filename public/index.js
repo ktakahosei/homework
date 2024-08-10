@@ -17,7 +17,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     //クラス名が'input-text'の入力フィールドの値を取得
     const text = document.querySelector('.input-text').value;
     //fetch関数を使って、/api/userエンドポイントに対してPOSTリクエストを送信します。リクエストの設定として、Content-Typeをapplication/jsonに設定し、リクエストボディとして{ name: text }というJSONデータを送ります。このデータは、入力フィールドから取得したユーザー名です
-    fetch('/api/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: text }) });
+    fetch('/api/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text }) });
     /*
     const response = fetch('/api/check-answer', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: text }) });
     const result = await response.text();
